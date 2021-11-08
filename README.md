@@ -1,5 +1,7 @@
 # nvjc-store
 
+Project Nuxt - Vue
+
 ## Build Setup
 
 ```bash
