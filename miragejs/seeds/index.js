@@ -12,7 +12,11 @@ const usersSeeder = server => {
   server.createList('user', 10);
 };
 
+const productsSeeder = server => {
+  server.createList('product', 12);
+};
+
 export default function seeds(server) {
-  server.loadFixtures();
   usersSeeder(server);
+  productsSeeder(server);
 }
