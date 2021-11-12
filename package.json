@@ -10,7 +10,9 @@
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "prepare": "husky install",
     "lint": "yarn lint:js",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "test:coverage": "jest --coverage"
   },
   "lint-staged": {
     "*.{js,vue}": "eslint"
@@ -26,6 +28,7 @@
     "@nuxtjs/eslint-config": "^6.0.1",
     "@nuxtjs/eslint-module": "^3.0.2",
     "@nuxtjs/tailwindcss": "^4.2.0",
+    "@types/jest": "^27.0.2",
     "@vue/test-utils": "^1.2.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^27.0.5",
