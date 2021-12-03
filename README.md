@@ -17,6 +17,12 @@ $ yarn start
 
 # generate static project
 $ yarn generate
+
+# test watch project
+$ yarn test:watch
+
+# test coverage project
+$ yarn test:coverage
 ```
 
 For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
