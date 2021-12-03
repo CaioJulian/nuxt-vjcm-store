@@ -1,9 +1,11 @@
 <template>
   <main class="my-8">
-    <search />
+    <search @doSearch="setSearchTerm" />
     <div v-if="errorMessage === ''" class="container mx-auto px-6">
       <h3 class="text-gray-700 text-2xl font-medium">Wrist Watch</h3>
-      <span v-if="products.length > 0" class="mt-3 text-sm text-gray-500">{{products.length}} Products</span>
+      <span v-if="products.length > 0" class="mt-3 text-sm text-gray-500"
+        >{{ products.length }} Products</span
+      >
       <div
         class="
           grid
@@ -16,7 +18,7 @@
         "
       >
         <product-card
-          v-for="product in products"
+          v-for="product in list"
           :key="product.id"
           :product="product"
         />
@@ -36,7 +38,18 @@ export default {
     return {
       products: [],
       errorMessage: '',
+      searchTerm: '',
     };
+  },
+  computed: {
+    list() {
+      if (this.searchTerm !== '') {
+        return this.products.filter(({ title }) => {
+          return title.includes(this.searchTerm);
+        });
+      }
+      return this.products;
+    },
   },
   async created() {
     try {
@@ -44,6 +57,11 @@ export default {
     } catch (error) {
       this.errorMessage = 'Problem loading a list';
     }
+  },
+  methods: {
+    setSearchTerm({ term }) {
+      this.searchTerm = term;
+    },
   },
 };
 </script>
