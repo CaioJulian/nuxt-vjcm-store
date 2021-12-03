@@ -81,9 +81,6 @@ describe('ProductList - integration', () => {
       server.create('product', {
         title: 'Watch Rolex',
       }),
-      server.create('product', {
-        title: 'Watch Mi',
-      }),
     ];
 
     axios.get.mockReturnValue(Promise.resolve({ data: { products } }));
@@ -100,10 +97,12 @@ describe('ProductList - integration', () => {
     const search = wrapper.findComponent(Search);
     search.find('input[type="search"').setValue('Watch');
     await search.find('form').trigger('submit');
+    search.find('input[type="search"').setValue('');
+    await search.find('form').trigger('submit');
 
     // Assert
     const cards = wrapper.findAllComponents(ProductCard);
-    expect(wrapper.vm.searchTerm).toEqual('Watch');
-    expect(cards).toHaveLength(2);
+    expect(wrapper.vm.searchTerm).toEqual('');
+    expect(cards).toHaveLength(11);
   });
 });
