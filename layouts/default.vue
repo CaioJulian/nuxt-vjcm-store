@@ -31,7 +31,7 @@
             Brand
           </div>
           <div class="flex items-center justify-end w-full">
-            <button @click="toggleCart" class="text-gray-600 focus:outline-none mx-4 sm:mx-0">
+            <button class="text-gray-600 focus:outline-none mx-4 sm:mx-0" @click="toggleCart">
               <svg
                 class="h-5 w-5"
                 fill="none"
