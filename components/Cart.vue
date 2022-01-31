@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed right-0 top-0 max-w-xs w-full h-full px-6 py-4 transition duration-300 transform overflow-y-auto bg-white border-l-2 border-gray-300"
+    class="fixed right-0 top-0 max-w-xs w-full h-full px-6 py-4 transition duration-300 transform overflow-y-auto bg-white border-l-2 border-gray-300 z-10"
     :class="{ hidden: !isOpen }"
   >
     <div class="flex items-center justify-between">
