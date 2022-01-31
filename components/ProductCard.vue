@@ -50,6 +50,8 @@ export default {
   methods: {
     addToCart() {
       this.$emit('addToCart', { product: this.product });
+      this.$store.commit('updateOpen', true);
+      this.$store.commit('addItem', this.product);
     },
   },
 };
