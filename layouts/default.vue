@@ -31,7 +31,10 @@
             Brand
           </div>
           <div class="flex items-center justify-end w-full">
-            <button class="text-gray-600 focus:outline-none mx-4 sm:mx-0" @click="toggleCart">
+            <button
+              class="text-gray-600 focus:outline-none mx-4 sm:mx-0"
+              @click="toggleCart"
+            >
               <svg
                 class="h-5 w-5"
                 fill="none"
@@ -98,7 +101,7 @@
         </nav>
       </div>
     </header>
-    <cart :is-open="isCartOpen" @close="toggleCart" />
+    <cart :products="products" :is-open="isCartOpen" @close="toggleCart" />
     <nuxt />
     <footer class="bg-gray-200">
       <div
@@ -117,14 +120,18 @@
 import Cart from '@/components/Cart';
 export default {
   components: { Cart },
-  data() {
-    return {
-      isCartOpen: false,
-    };
+  computed: {
+    isCartOpen() {
+      return this.$store.state.open;
+    },
+
+    products() {
+      return this.$store.state.items;
+    },
   },
   methods: {
     toggleCart() {
-      this.isCartOpen = !this.isCartOpen;
+      this.$store.commit('toggleOpen');
     },
   },
 };

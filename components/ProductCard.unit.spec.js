@@ -1,9 +1,30 @@
-import { mount } from '@vue/test-utils';
+import { mount, createLocalVue } from '@vue/test-utils';
+import Vuex, { Store } from 'vuex';
 import ProductCard from '@/components/ProductCard.vue';
 import { makeServer } from '@/miragejs/server';
 
+const localVue = createLocalVue();
+localVue.use(Vuex);
+
 describe('ProductCard - unit', () => {
-  let server;
+  let server, store, mutations;
+
+  beforeEach(() => {
+    server = makeServer({ environment: 'test' });
+
+    mutations = {
+      updateOpen: jest.fn(),
+      addItem: jest.fn(),
+    };
+
+    store = new Store({
+      mutations
+    });
+  });
+
+  afterEach(() => {
+    server.shutdown();
+  });
 
   const mountProductCard = () => {
     const product = server.create('product', {
@@ -17,18 +38,12 @@ describe('ProductCard - unit', () => {
         propsData: {
           product,
         },
+        store,
+        localVue,
       }),
       product,
     };
   };
-
-  beforeEach(() => {
-    server = makeServer({ environment: 'test' });
-  });
-
-  afterEach(() => {
-    server.shutdown();
-  });
 
   it('should match snapshot', () => {
     const { wrapper } = mountProductCard();
@@ -46,13 +61,11 @@ describe('ProductCard - unit', () => {
     expect(wrapper.text()).toContain('$12.00');
   });
 
-  it('should emit the event addToCart with product object when button gets clicked', async () => {
-    const { wrapper, product } = mountProductCard();
+  it('should add item on button click', async () => {
+    const { wrapper } = mountProductCard();
 
     await wrapper.find('button').trigger('click');
 
-    expect(wrapper.emitted().addToCart).toBeTruthy();
-    expect(wrapper.emitted().addToCart.length).toBe(1);
-    expect(wrapper.emitted().addToCart[0]).toEqual([{ product }]);
+    expect(mutations.addItem).toHaveBeenCalled();
   });
 });
