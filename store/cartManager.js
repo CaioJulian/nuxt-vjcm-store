@@ -4,17 +4,48 @@ export const state = () => ({
 });
 
 export const mutations = {
-  updateOpen(state, payload) {
-    state.open = payload;
-  },
-
   toggleOpen(state) {
     state.open = !state.open;
   },
 
-  addProduct(state, payload) {
-    const exists = !!state.items.find(({ id }) => id === payload.id);
+  open(state) {
+    state.open = true;
+  },
+
+  close(state) {
+    state.open = false;
+  },
+
+  removeProduct(state, productId) {
+    state.items = [
+      ...state.items.filter((product) => product.id !== productId),
+    ];
+  },
+
+  clearProducts(state) {
+    state.items = [];
+  },
+};
+
+export const getters = {
+  hasProducts(state) {
+    return state.items.length > 0;
+  },
+};
+
+export const actions = {
+  productIsInTheCart({ state }, product) {
+    return !!state.items.find(({ id }) => id === product.id);
+  },
+
+  async addProduct({ state, dispatch }, payload) {
+    const exists = await dispatch('productIsInTheCart', payload);
 
     if (!exists) state.items.push(payload);
+  },
+
+  clearCart({ commit }) {
+    commit('clearProducts');
+    commit('close');
   },
 };
