@@ -12,7 +12,9 @@ export const mutations = {
     state.open = !state.open;
   },
 
-  addItem(state, payload) {
-    state.items.push(payload);
+  addProduct(state, payload) {
+    const exists = !!state.items.find(({ id }) => id === payload.id);
+
+    if (!exists) state.items.push(payload);
   },
 };
