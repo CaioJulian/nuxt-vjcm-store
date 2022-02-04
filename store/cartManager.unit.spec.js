@@ -19,6 +19,23 @@ describe('cartManager - unit', () => {
     server.shutdown();
   });
 
+  it('should return the state', async () => {
+    const product = server.create('product');
+    store.commit('open');
+    await store.dispatch('addProduct', product);
+
+    expect(store.state).toEqual({
+      items: [product],
+      open: true,
+    });
+  });
+
+  it('should set cart to toggle open ', () => {
+    store.commit('toggleOpen');
+
+    expect(store.state.open).toBe(true);
+  });
+
   it('should set cart to open', () => {
     store.commit('open');
 
@@ -97,5 +114,4 @@ describe('cartManager - unit', () => {
 
     expect(exists).toBe(true);
   });
-
 });
