@@ -49,8 +49,8 @@ export default {
   },
   methods: {
     addToCart() {
-      this.$store.commit('updateOpen', true);
-      this.$store.commit('addItem', this.product);
+      this.$store.commit('cartManager/open');
+      this.$store.commit('cartManager/addProduct', this.product);
     },
   },
 };
