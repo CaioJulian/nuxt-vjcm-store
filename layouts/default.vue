@@ -122,16 +122,16 @@ export default {
   components: { Cart },
   computed: {
     isCartOpen() {
-      return this.$store.state.open;
+      return this.$store.state.cartManager.open;
     },
 
     products() {
-      return this.$store.state.items;
+      return this.$store.state.cartManager.items;
     },
   },
   methods: {
     toggleCart() {
-      this.$store.commit('toggleOpen');
+      this.$store.commit('cartManager/toggleOpen');
     },
   },
 };

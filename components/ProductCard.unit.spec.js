@@ -7,18 +7,23 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 
 describe('ProductCard - unit', () => {
-  let server, store, mutations;
+  let server, store, cartManager;
 
   beforeEach(() => {
     server = makeServer({ environment: 'test' });
 
-    mutations = {
-      updateOpen: jest.fn(),
-      addItem: jest.fn(),
+    cartManager = {
+      namespaced: true,
+      mutations: {
+        open: jest.fn(),
+        addProduct: jest.fn(),
+      },
     };
 
     store = new Store({
-      mutations
+      modules: {
+        cartManager,
+      },
     });
   });
 
@@ -66,6 +71,6 @@ describe('ProductCard - unit', () => {
 
     await wrapper.find('button').trigger('click');
 
-    expect(mutations.addItem).toHaveBeenCalled();
+    expect(cartManager.mutations.addProduct).toHaveBeenCalled();
   });
 });
