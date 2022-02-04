@@ -19,10 +19,10 @@ describe('cartManager - unit', () => {
     server.shutdown();
   });
 
-  it('should return the state', async () => {
+  it('should return the state', () => {
     const product = server.create('product');
     store.commit('open');
-    await store.dispatch('addProduct', product);
+    store.commit('addProduct', product);
 
     expect(store.state).toEqual({
       items: [product],
@@ -48,11 +48,11 @@ describe('cartManager - unit', () => {
     expect(store.state.open).toBe(false);
   });
 
-  it('should add product to the cart only once', async () => {
+  it('should add product to the cart only once', () => {
     const product = server.create('product');
 
-    await store.dispatch('addProduct', product);
-    await store.dispatch('addProduct', product);
+    store.commit('addProduct', product);
+    store.commit('addProduct', product);
 
     expect(store.state.items).toHaveLength(1);
   });
@@ -60,7 +60,7 @@ describe('cartManager - unit', () => {
   it('should remove product from the cart', async () => {
     const product = server.create('product');
 
-    await store.dispatch('addProduct', product);
+    store.commit('addProduct', product);
 
     await store.commit('removeProduct', product.id);
 
@@ -71,8 +71,8 @@ describe('cartManager - unit', () => {
     const product1 = server.create('product');
     const product2 = server.create('product');
 
-    await store.dispatch('addProduct', product1);
-    await store.dispatch('addProduct', product2);
+    store.commit('addProduct', product1);
+    store.commit('addProduct', product2);
 
     await store.commit('clearProducts');
 
@@ -83,8 +83,8 @@ describe('cartManager - unit', () => {
     const product1 = server.create('product');
     const product2 = server.create('product');
 
-    await store.dispatch('addProduct', product1);
-    await store.dispatch('addProduct', product2);
+    store.commit('addProduct', product1);
+    store.commit('addProduct', product2);
     store.commit('open');
 
     await store.dispatch('clearCart');
@@ -97,21 +97,11 @@ describe('cartManager - unit', () => {
     const product1 = server.create('product');
     const product2 = server.create('product');
 
-    await store.dispatch('addProduct', product1);
-    await store.dispatch('addProduct', product2);
+    store.commit('addProduct', product1);
+    store.commit('addProduct', product2);
 
     const hasProducts = await store.getters.hasProducts;
 
     expect(hasProducts).toBe(true);
-  });
-
-  it('should return true if product is already in the cart', async () => {
-    const product = server.create('product');
-
-    await store.dispatch('addProduct', product);
-
-    const exists = await store.dispatch('productIsInTheCart', product);
-
-    expect(exists).toBe(true);
   });
 });

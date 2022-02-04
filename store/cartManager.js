@@ -16,6 +16,12 @@ export const mutations = {
     state.open = false;
   },
 
+  addProduct(state, payload) {
+    const exists = !!state.items.find(({ id }) => id === payload.id);
+
+    if (!exists) state.items.push(payload);
+  },
+
   removeProduct(state, productId) {
     state.items = [
       ...state.items.filter((product) => product.id !== productId),
@@ -34,16 +40,6 @@ export const getters = {
 };
 
 export const actions = {
-  productIsInTheCart({ state }, product) {
-    return !!state.items.find(({ id }) => id === product.id);
-  },
-
-  async addProduct({ state, dispatch }, payload) {
-    const exists = await dispatch('productIsInTheCart', payload);
-
-    if (!exists) state.items.push(payload);
-  },
-
   clearCart({ commit }) {
     commit('clearProducts');
     commit('close');
