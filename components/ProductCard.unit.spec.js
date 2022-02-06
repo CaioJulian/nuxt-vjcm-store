@@ -38,14 +38,17 @@ describe('ProductCard - unit', () => {
       image:
         'https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
     });
+
+    const wrapper = mount(ProductCard, {
+      propsData: {
+        product,
+      },
+      store,
+      localVue,
+    });
+
     return {
-      wrapper: mount(ProductCard, {
-        propsData: {
-          product,
-        },
-        store,
-        localVue,
-      }),
+      wrapper,
       product,
     };
   };
@@ -66,11 +69,15 @@ describe('ProductCard - unit', () => {
     expect(wrapper.text()).toContain('$12.00');
   });
 
-  it('should add item on button click', async () => {
-    const { wrapper } = mountProductCard();
+  it('should add item to cartManager on button click', async () => {
+    const { wrapper, product } = mountProductCard();
+    const { mutations } = cartManager;
+    const spy = jest.spyOn(mutations, 'addProduct');
 
     await wrapper.find('button').trigger('click');
 
-    expect(cartManager.mutations.addProduct).toHaveBeenCalled();
+    expect(mutations.open).toHaveBeenCalledTimes(1);
+    expect(mutations.addProduct).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith({}, product);
   });
 });
