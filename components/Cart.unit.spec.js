@@ -46,7 +46,7 @@ describe('Cart - unit', () => {
   };
 
   it('should mount the component', () => {
-    const { wrapper } = mountCart();
+    const wrapper = mount(Cart);
 
     expect(wrapper.vm).toBeDefined();
   });
