@@ -1,11 +1,34 @@
 <template>
   <div
-    class="fixed right-0 top-0 max-w-xs w-full h-full px-6 py-4 transition duration-300 transform overflow-y-auto bg-white border-l-2 border-gray-300 z-10"
+    class="
+      fixed
+      right-0
+      top-0
+      max-w-xs
+      w-full
+      h-full
+      px-6
+      py-4
+      transition
+      duration-300
+      transform
+      overflow-y-auto
+      bg-white
+      border-l-2 border-gray-300
+      z-10
+    "
     :class="{ hidden: !isOpen }"
   >
     <div class="flex items-center justify-between">
       <h3 class="text-2xl font-medium text-gray-700">Your Cart</h3>
-      <button data-testid="close-button" class="text-gray-600 focus:outline-none" @click="close">
+      <button data-testid="clear-cart-button" @click="clearProducts()">
+        clear cart
+      </button>
+      <button
+        data-testid="close-button"
+        class="text-gray-600 focus:outline-none"
+        @click="close"
+      >
         <svg
           class="h-5 w-5"
           fill="none"
@@ -21,12 +44,30 @@
     </div>
     <hr class="my-3" />
 
-    <cart-item v-for="product in products" :key="product.id" :product="product" />
+    <cart-item
+      v-for="product in products"
+      :key="product.id"
+      :product="product"
+    />
 
     <h3 v-if="!hasProducts">Cart is empty</h3>
 
     <a
-      class="flex items-center justify-center mt-4 px-3 py-2 bg-blue-600 text-white text-sm uppercase font-medium rounded hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
+      class="
+        flex
+        items-center
+        justify-center
+        mt-4
+        px-3
+        py-2
+        bg-blue-600
+        text-white text-sm
+        uppercase
+        font-medium
+        rounded
+        hover:bg-blue-500
+        focus:outline-none focus:bg-blue-500
+      "
     >
       <span>Checkout</span>
       <svg
@@ -45,7 +86,7 @@
 </template>
 
 <script>
-import CartItem from '@/components/CartItem'
+import CartItem from '@/components/CartItem';
 export default {
   name: 'Cart',
   components: { CartItem },
@@ -54,20 +95,24 @@ export default {
       type: Boolean,
       default: false,
     },
-    products:{
+    products: {
       type: Array,
       default: () => [],
-    }
+    },
   },
   computed: {
     hasProducts() {
       return this.products.length > 0;
-    }
+    },
   },
   methods: {
     close() {
       this.$emit('close');
-    }
+    },
+
+    clearProducts() {
+      this.$store.commit('cartManager/clearProducts');
+    },
   },
-}
+};
 </script>
