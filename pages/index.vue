@@ -3,8 +3,11 @@
     <search @doSearch="setSearchTerm" />
     <div v-if="errorMessage === ''" class="container mx-auto px-6">
       <h3 class="text-gray-700 text-2xl font-medium">Wrist Watch</h3>
-      <span v-if="products.length > 0" class="mt-3 text-sm text-gray-500"
-        >{{ products.length }} Products</span
+      <span
+        v-if="products.length > 0"
+        data-testid="total-quantity-label"
+        class="mt-3 text-sm text-gray-500"
+        >{{ quantityLabel }}</span
       >
       <div
         class="
@@ -49,6 +52,11 @@ export default {
         });
       }
       return this.products;
+    },
+
+    quantityLabel() {
+      const { length } = this.list;
+      return length === 1 ? `${length} Product` : `${length} Products`;
     },
   },
   async created() {

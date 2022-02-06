@@ -19,33 +19,38 @@ describe('ProductList - integration', () => {
 
   afterEach(() => {
     server.shutdown();
+    jest.clearAllMocks();
   });
 
-  it('should mount the component', () => {
-    const wrapper = mount(ProductList);
-    expect(wrapper.vm).toBeDefined();
-  });
+  const getProducts = (quantity = 10, overrides = []) => {
+    let overrideList = [];
 
-  it('should mount the Search component', () => {
-    const wrapper = mount(ProductList);
-    expect(wrapper.findComponent(Search)).toBeDefined();
-  });
+    if (overrides.length > 0) {
+      overrideList = overrides.map((override) =>
+        server.create('product', override)
+      );
+    }
 
-  it('should call axios.get on component mount', () => {
-    mount(ProductList, {
-      mocks: {
-        $axios: axios,
-      },
-    });
+    const products = [
+      ...server.createList('product', quantity),
+      ...overrideList,
+    ];
 
-    expect(axios.get).toHaveBeenCalledTimes(1);
-    expect(axios.get).toHaveBeenCalledWith('/api/products');
-  });
+    return products;
+  };
 
-  it('should mount the ProductCard component 10 times', async () => {
-    const products = server.createList('product', 10);
+  const mountProductList = async (
+    quantity = 10,
+    overrides = [],
+    shouldReject = false
+  ) => {
+    const products = getProducts(quantity, overrides);
 
-    axios.get.mockReturnValue(Promise.resolve({ data: { products } }));
+    if (shouldReject) {
+      axios.get.mockReturnValue(Promise.reject(new Error('error list')));
+    } else {
+      axios.get.mockReturnValue(Promise.resolve({ data: { products } }));
+    }
 
     const wrapper = mount(ProductList, {
       mocks: {
@@ -54,6 +59,29 @@ describe('ProductList - integration', () => {
     });
 
     await Vue.nextTick();
+
+    return { wrapper, products };
+  };
+
+  it('should mount the component', async () => {
+    const { wrapper } = await mountProductList();
+    expect(wrapper.vm).toBeDefined();
+  });
+
+  it('should mount the Search component', async () => {
+    const { wrapper } = await mountProductList();
+    expect(wrapper.findComponent(Search)).toBeDefined();
+  });
+
+  it('should call axios.get on component mount', async () => {
+    await mountProductList();
+
+    expect(axios.get).toHaveBeenCalledTimes(1);
+    expect(axios.get).toHaveBeenCalledWith('/api/products');
+  });
+
+  it('should mount the ProductCard component 10 times', async () => {
+    const { wrapper } = await mountProductList();
 
     const cards = wrapper.findAllComponents(ProductCard);
 
@@ -61,37 +89,18 @@ describe('ProductList - integration', () => {
   });
 
   it('should display the error message when Promise rejects', async () => {
-    axios.get.mockReturnValue(Promise.reject(new Error('error list')));
-
-    const wrapper = mount(ProductList, {
-      mocks: {
-        $axios: axios,
-      },
-    });
-
-    await Vue.nextTick();
+    const { wrapper } = await mountProductList(10, [], true);
 
     expect(wrapper.text()).toContain('Problem loading a list');
   });
 
   it('should filter the product list when a search is performed', async () => {
     // Arrange
-    const products = [
-      ...server.createList('product', 10),
-      server.create('product', {
+    const { wrapper } = await mountProductList(10, [
+      {
         title: 'Watch Rolex',
-      }),
-    ];
-
-    axios.get.mockReturnValue(Promise.resolve({ data: { products } }));
-
-    const wrapper = mount(ProductList, {
-      mocks: {
-        $axios: axios,
       },
-    });
-
-    await Vue.nextTick();
+    ]);
 
     // Act
     const search = wrapper.findComponent(Search);
@@ -104,5 +113,19 @@ describe('ProductList - integration', () => {
     const cards = wrapper.findAllComponents(ProductCard);
     expect(wrapper.vm.searchTerm).toEqual('');
     expect(cards).toHaveLength(11);
+  });
+
+  it('should display the total quantity of products', async () => {
+    const { wrapper } = await mountProductList(25);
+    const label = wrapper.find('[data-testid="total-quantity-label"]');
+
+    expect(label.text()).toEqual('25 Products');
+  });
+
+  it('should display product (singular) when there is only 1 product', async () => {
+    const { wrapper } = await mountProductList(1);
+    const label = wrapper.find('[data-testid="total-quantity-label"]');
+
+    expect(label.text()).toEqual('1 Product');
   });
 });

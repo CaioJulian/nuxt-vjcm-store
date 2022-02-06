@@ -31,7 +31,11 @@
             Brand
           </div>
           <div class="flex items-center justify-end w-full">
-            <button class="text-gray-600 focus:outline-none mx-4 sm:mx-0">
+            <button
+              data-testid = "toggle-button"
+              class="text-gray-600 focus:outline-none mx-4 sm:mx-0"
+              @click="toggleCart"
+            >
               <svg
                 class="h-5 w-5"
                 fill="none"
@@ -50,7 +54,11 @@
             <div class="flex sm:hidden">
               <button
                 type="button"
-                class="text-gray-600 hover:text-gray-500 focus:outline-none focus:text-gray-500"
+                class="
+                  text-gray-600
+                  hover:text-gray-500
+                  focus:outline-none focus:text-gray-500
+                "
                 aria-label="toggle menu"
               >
                 <svg viewBox="0 0 24 24" class="h-6 w-6 fill-current">
@@ -94,7 +102,7 @@
         </nav>
       </div>
     </header>
-    <!-- <cart /> -->
+    <cart :products="products" :is-open="isCartOpen" @close="toggleCart" />
     <nuxt />
     <footer class="bg-gray-200">
       <div
@@ -110,8 +118,22 @@
 </template>
 
 <script>
-// import Cart from '@/components/Cart'
-// export default {
-//   components: { Cart },
-// }
+import Cart from '@/components/Cart';
+export default {
+  components: { Cart },
+  computed: {
+    isCartOpen() {
+      return this.$store.state.cartManager.open;
+    },
+
+    products() {
+      return this.$store.state.cartManager.items;
+    },
+  },
+  methods: {
+    toggleCart() {
+      this.$store.commit('cartManager/toggleOpen');
+    },
+  },
+};
 </script>

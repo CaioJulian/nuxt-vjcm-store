@@ -49,7 +49,8 @@ export default {
   },
   methods: {
     addToCart() {
-      this.$emit('addToCart', { product: this.product });
+      this.$store.commit('cartManager/open');
+      this.$store.commit('cartManager/addProduct', this.product);
     },
   },
 };
