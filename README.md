@@ -1,6 +1,6 @@
 # nvjc-store
 
-Project Nuxt - Vue - Jest
+Project Nuxt - Vue - Jest - Mirage
 
 ## Build Setup
 
