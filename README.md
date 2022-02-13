@@ -1,6 +1,6 @@
 # nvjc-store
 
-Project Nuxt - Vue - Jest - Mirage
+Project Nuxt - Vue - Jest - Mirage - Cypress
 
 ## Build Setup
 
@@ -11,18 +11,14 @@ $ yarn install
 # serve with hot reload at localhost:3000
 $ yarn dev
 
-# build for production and launch server
-$ yarn build
-$ yarn start
-
-# generate static project
-$ yarn generate
-
 # test watch project
 $ yarn test:watch
 
 # test coverage project
 $ yarn test:coverage
+
+# test e2e project
+$ yarn test:e2e
 ```
 
 For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
