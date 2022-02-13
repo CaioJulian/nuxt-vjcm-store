@@ -1,6 +1,6 @@
 # nvjc-store
 
-Project Nuxt - Vue - Jest - Mirage - Cypress
+Project Nuxt - Vue - Jest - Cypress - Mirage
 
 ## Build Setup
 
