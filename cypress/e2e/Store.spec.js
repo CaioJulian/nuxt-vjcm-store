@@ -23,8 +23,10 @@ context('Store', () => {
   });
 
   context('Store > Shopping Cart', () => {
+    const quantity = 10;
+
     beforeEach(() => {
-      server.createList('product', 10);
+      server.createList('product', quantity);
 
       cy.visit('/');
     });
@@ -46,11 +48,19 @@ context('Store', () => {
       cgId('shopping-cart').should('not.have.class', 'hidden');
     });
 
-    it.only('should add 3 products to the cart', () => {
-      cgId('product-card').eq(1).find('button').click();
-      cgId('product-card').eq(3).find('button').click({ force: true });
-      cgId('product-card').eq(5).find('button').click({ force: true });
+    it('should add 3 products to the cart', () => {
+      cy.addToCart([1, 2, 3]);
       cgId('cart-item').should('have.length', 3);
+    });
+
+    it('should add 1 product to the cart', () => {
+      cy.addToCart(6);
+      cgId('cart-item').should('have.length', 1);
+    });
+
+    it('should add all products to the cart', () => {
+      cy.addToCart('all');
+      cgId('cart-item').should('have.length', quantity);
     });
   });
 
