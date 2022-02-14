@@ -24,6 +24,7 @@ context('Store', () => {
     it('should display "0 Products" when no products is returned', () => {
       cy.visit('/');
       cy.get('[data-testid="product-card"]').should('have.length', 0);
+      cy.get('body').contains('0 Products');
     });
 
     it('should display "1 Product" when 1 product is returned', () => {
