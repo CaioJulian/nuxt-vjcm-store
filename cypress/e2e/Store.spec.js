@@ -47,17 +47,17 @@ context('Store', () => {
     });
 
     it('should add 3 products to the cart', () => {
-      cy.addToCart([1, 2, 3]);
+      cy.addToCart({ indexes: [1, 2, 3] });
       cgId('cart-item').should('have.length', 3);
     });
 
     it('should add 1 product to the cart', () => {
-      cy.addToCart(6);
+      cy.addToCart({ index: 6 });
       cgId('cart-item').should('have.length', 1);
     });
 
     it('should add all products to the cart', () => {
-      cy.addToCart('all');
+      cy.addToCart({ indexes: 'all' });
       cgId('cart-item').should('have.length', quantity);
     });
   });
