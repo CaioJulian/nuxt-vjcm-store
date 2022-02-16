@@ -11,10 +11,12 @@
     "prepare": "husky install",
     "lint": "yarn lint:js",
     "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
     "test": "jest",
     "test:watch": "jest --watchAll",
     "test:coverage": "jest --coverage",
-    "test:e2e": "start-server-and-test dev 3000 cypress:open"
+    "test:e2e": "start-server-and-test dev 3000 cypress:open",
+    "test:e2e:headless": "start-server-and-test dev 3000 cypress:run"
   },
   "lint-staged": {
     "*.{js,vue}": "eslint"

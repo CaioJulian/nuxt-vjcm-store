@@ -77,7 +77,7 @@ context('Store', () => {
       cgId('quantity').contains(1);
     });
 
-    it.only('should not decrease below zero when button - gets clicked', () => {
+    it('should not decrease below zero when button - gets clicked', () => {
       cy.addToCart({ index: 1 });
       cgId('-').click();
       cgId('-').click();
