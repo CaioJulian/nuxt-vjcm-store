@@ -19,6 +19,9 @@ $ yarn test:coverage
 
 # test e2e project
 $ yarn test:e2e
+
+# test e2e headless project
+$ yarn test:e2e:headless
 ```
 
 For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
