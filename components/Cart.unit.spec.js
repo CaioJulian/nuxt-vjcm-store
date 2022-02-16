@@ -39,7 +39,7 @@ describe('Cart - unit', () => {
         products,
       },
       store,
-      localVue
+      localVue,
     });
 
     return { wrapper, products };
@@ -49,6 +49,14 @@ describe('Cart - unit', () => {
     const wrapper = mount(Cart);
 
     expect(wrapper.vm).toBeDefined();
+  });
+
+  it('should not display empty cart button when there are no products', () => {
+    const wrapper = mount(Cart);
+
+    expect(wrapper.find('[data-testid="clear-cart-button"]').exists()).toBe(
+      false
+    );
   });
 
   it('should emit close event when button gets clicked', async () => {
