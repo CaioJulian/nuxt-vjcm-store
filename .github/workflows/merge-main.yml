@@ -3,7 +3,7 @@ name: ci
 on:
   push:
     branches:
-      - develop
+      - main
 
 jobs:
   build:
@@ -41,5 +41,14 @@ jobs:
       - name: Run Linter
         run: yarn lint
 
-      - name: Run Cypress tests
-        run: yarn test:e2e:headless
+      - name: Build app
+        run: yarn generate
+
+      - name: Deploy to netlify
+        uses: netlify/actions/cli@master
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        with:
+          args: deploy --dir=dist --prod
+          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]'
