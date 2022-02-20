@@ -41,7 +41,7 @@ export const getters = {
 
 export const actions = {
   clearCart({ commit }) {
-    commit('clearProducts')
-    commit('close')
+    commit('clearProducts');
+    commit('close');
   },
 };

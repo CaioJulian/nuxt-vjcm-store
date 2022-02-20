@@ -4,4 +4,4 @@
 
 yarn lint-staged
 
-yarn test
+./node_modules/.bin/pretty-quick --staged
